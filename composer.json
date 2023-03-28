@@ -1,0 +1,14 @@
+{
+  "name": "vendor_name/News",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Administrator",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  }
+}

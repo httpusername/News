@@ -11,5 +11,4 @@ class IndexController extends Controller
     {
         echo 'index...';
     }
-
 }

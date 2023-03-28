@@ -33,4 +33,4 @@ define('DB_PROT','3306');
 //字符集编码
 define('DB_CHARSET','utf-8');
 //表前缀
-define('DB_PERFIX','');
+define('DB_PREFIX','');

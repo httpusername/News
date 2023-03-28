@@ -29,3 +29,11 @@ function abc($a,$b,$c){
     var_dump($b);
     var_dump($c);
 }
+
+function test($field,$a,$b,$c) {
+    var_dump($field);
+    var_dump($a);
+    var_dump($b);
+    var_dump($c);
+    var_dump('test...');
+}

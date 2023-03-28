@@ -1,5 +1,4 @@
 <?php
-
 namespace Common;
 if(!SITE) {exit('Access Denied');}
 class DB extends \mysqli
@@ -16,13 +15,13 @@ class DB extends \mysqli
     public function __construct($config)
     {
         $this->config=array_merge($this->config,$config);
-        parent::__construct($this->config['host'], $this->config['user'], $this->config['password'], $this->config['database'], $this->config['port']);
+        @parent::__construct($this->config['host'], $this->config['user'], $this->config['password'], $this->config['database'], $this->config['port']);
         if($this->connect_error){
             $this->dError($this->connect_error);
         }
         $this->set_charset($this->config['charset']);
     }
-    public function dError($error) {
+    protected function dError($error) {
         throw new \Exception($error);
     }
 //$param=array(
@@ -32,33 +31,28 @@ class DB extends \mysqli
     public function execute($param){
         $stmt=$this->stmt_init();
         if($stmt->prepare($param['sql'])){
-
-            if(isset($param['bind'])) {
+            if(isset($param['bind'])){
                 foreach ($param['bind'][1] as $key=>$val){
                     $tmp[]=&$param['bind'][1][$key];
                 }
                 array_unshift($tmp,$param['bind'][0]);
                 if(!@call_user_func_array(array($stmt,'bind_param'),$tmp)){
-                    $this->dError('参数绑定失败');
+                    $this->dError('参数绑定失败.');
                 }
             }
-
-            if($stmt->execute()) {
-
-                if($stmt->result_metadata()) {
+            if($stmt->execute()){
+                if($stmt->result_metadata()){
                     $result=$stmt->get_result();
                     return $result->fetch_all(MYSQLI_ASSOC);
-                } else {
-                    $this->lastInsID=$stmt->insert_id;
-                    return $stmt->affected_rows;
                 }
-            } else {
+                $this->lastInsID=$stmt->insert_id;
+                return $stmt->affected_rows;
+            }else{
                 $this->dError($stmt->error);
             }
         }else{
             $this->dError($stmt->error);
         }
-
     }
     public function getLastInsID() {
          if($this->lastInsID){
